@@ -1,2 +1,3 @@
 WOM_BASE_API_URL="https://api.wiseoldman.net/v2"
 WOM_COMPETITION_ENDPOINT="competitions"
+MAIN_CHANNEL_ID=1339005246390931488

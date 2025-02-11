@@ -12,6 +12,7 @@ class Competition:
     thumbnail_url: Optional[str] = None,
     name: Optional[str] = None,
     wom_id: Optional[int] = None,
+    ends_on: Optional[datetime] = None,
 
     @classmethod
     def from_dict(cls, data: dict) -> "Competition":
