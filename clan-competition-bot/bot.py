@@ -39,6 +39,7 @@ class Bot(commands.Bot):
     async def update_leaderboard(self):
         bot.logger.info(f"Running update_leaderboard")
 
+        #TODO - Repeated code
         competition: Competition = Competition.from_dict(self.database.competition_collection.find_one({"is_active": True}))
         if competition:
             bot.logger.info(f"Found competition: {competition}")
@@ -49,6 +50,9 @@ class Bot(commands.Bot):
         data = await bot.wom_client.fetch_competition(competition.wom_id)
         
         current_leaderboard_string = bot.leaderboard_formatter.format_leaderboard(data)
+        if not bot.get_channel(MAIN_CHANNEL_ID):
+            bot.logger.warning(f"Leaderboard channel with ID {MAIN_CHANNEL_ID} not found")
+            return
         message = await bot.get_channel(MAIN_CHANNEL_ID).fetch_message(competition.message_id)
         await message.edit(embed=get_competition_embed(competition, current_leaderboard_string))
 
@@ -62,7 +66,7 @@ async def hello(interaction: discord.Interaction):
 Creates and tracks a competition using the WOM competition ID.
 """
 @bot.tree.command(name="create_competition_embed", description="Creates a competition embed (doesn't start the auto-updater)")
-async def track_ongoing_competition(interaction: discord.Interaction, competition_id: int, thumbnail_url: str, competition_title: str, ends_on: str):
+async def track_ongoing_competition(interaction: discord.Interaction, competition_id: int, thumbnail_url: str, competition_title: str):
     bot.logger.info(f"User {interaction.user.display_name} invoked the create_competition_embed command (ID: {competition_id}, Thumbnail URL: {thumbnail_url})")
     if not competition_id:
         bot.logger.warning(f"Interaction by {interaction.user.display_name} - No competition ID given")
@@ -75,13 +79,19 @@ async def track_ongoing_competition(interaction: discord.Interaction, competitio
     
     try:
         data = await bot.wom_client.fetch_competition(competition_id)
+        
+        # TODO - Extract to datetime service
+        ends_at_str = data["endsAt"]
+        ends_at_datetime = datetime.datetime.strptime(ends_at_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+        ends_at_unix = int(ends_at_datetime.timestamp())
+
         competition = Competition(
             message_id=None,
             is_active=False,
             thumbnail_url=thumbnail_url,
             name=competition_title,
             wom_id=competition_id,
-            ends_on=data["endsAt"])
+            ends_on=ends_at_unix)
         bot.logger.info(f"Competition created: {competition}\nAttempting to insert into db...")
         bot.database.competition_collection.insert_one(competition.to_dict())
                 
