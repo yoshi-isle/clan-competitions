@@ -1,2 +1,3 @@
-![image](https://github.com/user-attachments/assets/fd448911-7fa5-4e1f-ae91-b5d57e0cba6c)
+![image](https://github.com/user-attachments/assets/88f639da-84c6-4c20-9661-03892c3c5e04)
+
 Tracks wiseoldman competitions
