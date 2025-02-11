@@ -25,4 +25,4 @@ class LeaderboardFormatter:
             formatted_leaderboard += f"{emoji}{i+1}. {username}: {gained} xp\n"
             placement += 1
         self.logger.info(f"{formatted_leaderboard}")
-        return formatted_leaderboard, data["endsAt"]
+        return formatted_leaderboard
