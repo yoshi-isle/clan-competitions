@@ -1,0 +1,13 @@
+services:
+  clan-competition-bot:
+    build:
+      context: ./clan-competition-bot
+      dockerfile: Dockerfile
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+             watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- python bot.py"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./clan-competition-bot:/bot
+    tty: true
