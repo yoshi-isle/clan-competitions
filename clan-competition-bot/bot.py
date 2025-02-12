@@ -59,6 +59,7 @@ class Bot(commands.Bot):
 bot=Bot()
 
 @bot.tree.command(name="ping", description="Tests that the bot is running")
+@commands.has_permissions(administrator=True)
 async def hello(interaction: discord.Interaction):
     await interaction.response.send_message(f"Hello {interaction.user.name}!", ephemeral=True)
 
@@ -112,6 +113,7 @@ async def track_ongoing_competition(interaction: discord.Interaction, competitio
 Starts a competition by message ID
 """
 @bot.tree.command(name="start_competition_tracking", description="Starts tracking a competition")
+@commands.has_permissions(administrator=True)
 async def track_ongoing_competition(interaction: discord.Interaction, message_id: str):
     bot.logger.info(f"User {interaction.user.display_name} invoked the start_competition_tracking command (Message id: {message_id})")
 
@@ -134,6 +136,7 @@ async def track_ongoing_competition(interaction: discord.Interaction, message_id
 Stop a competition by message ID
 """
 @bot.tree.command(name="stop_competition_tracking", description="Starts tracking a competition")
+@commands.has_permissions(administrator=True)
 async def track_ongoing_competition(interaction: discord.Interaction, message_id: str):
     bot.logger.info(f"User {interaction.user.display_name} invoked the stop_competition_tracking command (Message id: {message_id})")
 

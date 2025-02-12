@@ -14,7 +14,7 @@ class LeaderboardFormatter:
             username = player_data['player']['username']
             gained = player_data['progress']['gained']
             self.logger.info(f"{i}: {player_data}")
-            self.logger.info(f"{username} gained {gained} XP")
+            self.logger.info(f"{username} gained {gained} KC")
             emoji = ""
             if placement == 1:
                 emoji = "🏆 "
@@ -22,7 +22,7 @@ class LeaderboardFormatter:
                 emoji = "🥈 "
             elif placement == 3:
                 emoji = "🥉 "
-            formatted_leaderboard += f"{emoji}{i+1}. {username}: {gained} xp\n"
+            formatted_leaderboard += f"{emoji}{i+1}. {username}: {gained} KC\n"
             placement += 1
         self.logger.info(f"{formatted_leaderboard}")
         return formatted_leaderboard
